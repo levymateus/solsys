@@ -1,12 +1,26 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 import { System, Not } from 'ecsy';
 import * as THREE from 'three';
-import { Geometry, StateComponentGeometry } from '../core/Components';
+import { Geometry, StateComponentGeometry, Material } from '../core/Components';
 
 class GeometrySystem extends System {
-  execute() {
+  execute(delta, time) {
     this.queries.added.results.forEach((entity) => {
       const geoComp = entity.getComponent(Geometry);
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const materialComp = entity.getComponent(Material);
+
+      const uniforms = {
+        time,
+      };
+
+      const material = new THREE.ShaderMaterial({
+        uniforms,
+        vertexShader: materialComp?.vertexShader,
+        fragmentShader: materialComp?.fragmentShader,
+        wireframe: !!materialComp?.wireframe,
+        vertexColors: !!materialComp?.vertexColors,
+      });
 
       if (geoComp.textureUrl) {
         material.map = new THREE.TextureLoader().load(geoComp.textureUrl);
@@ -18,12 +32,10 @@ class GeometrySystem extends System {
           geometry = new THREE.BoxGeometry(1, 1, 1);
           break;
         case 'Sphere':
-          geometry = new THREE.SphereGeometry();
+          geometry = new THREE.SphereGeometry(5, 32, 32);
           break;
-        // TODO: write the other primitives
         default:
-          geometry = new THREE.BoxGeometry();
-          break;
+          throw new Error(`${geoComp.primitive} needs to be implemented`);
       }
 
       const object3D = entity.getObject3D();
@@ -35,6 +47,13 @@ class GeometrySystem extends System {
       });
 
       object3D.add(mesh);
+    });
+
+    this.queries.normal.results.forEach((entity) => {
+      const stateGeometry = entity.getComponent(StateComponentGeometry);
+      if (stateGeometry.meshRef.geometry.material) {
+        stateGeometry.meshRef.geometry.material.uniforms.time = time;
+      }
     });
   }
 }

@@ -67,7 +67,7 @@ export class Engine {
     world.registerComponent(COMPS.Position);
     world.registerComponent(COMPS.Geometry);
     world.registerComponent(COMPS.GameObject);
-    world.registerComponent(COMPS.AxesHelper);
+    world.registerComponent(COMPS.Material);
     world.registerComponent(COMPS.StateComponentGeometry);
 
     world.registerSystem(RotationSystem);
@@ -97,17 +97,14 @@ export class Engine {
   }
 
   dispose() {
-    if (this.monitor) {
-      this.scene.dispose();
-      this.camera.dispose();
-      this.monitor.dispose();
-      this.webGLRenderer.dispose();
-    }
+    if (this.scene) this.scene.dispose();
+    if (this.camera) this.camera.dispose();
+    if (this.monitor) this.monitor.dispose();
+    if (this.webGLRenderer) this.webGLRenderer.dispose();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   pause() {
-    throw new Error('Method no implemented!');
+    throw new Error(`[${this.name}] pause() Method no implemented!`);
   }
 
   stop() {

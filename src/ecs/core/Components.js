@@ -27,6 +27,15 @@ StateComponentGeometry.schema = {
   meshRef: { type: ECSYTypes.Ref },
 };
 
+export class Material extends Component {}
+
+Material.schema = {
+  vertexShader: { type: ECSYTypes.String },
+  fragmentShader: { type: ECSYTypes.String },
+  vertexColors: { type: ECSYTypes.Boolean, default: false },
+  wireframe: { type: ECSYTypes.Boolean, default: false },
+};
+
 export class Geometry extends Component {}
 
 Geometry.schema = {
@@ -45,12 +54,4 @@ export class GameObject extends Component {}
 
 GameObject.schema = {
   module: { type: ECSYTypes.Ref },
-};
-
-export class AxesHelper extends Component {}
-
-AxesHelper.schema = {
-  ref: { type: ECSYTypes.Ref, default: new THREE.AxesHelper() },
-  name: { type: ECSYTypes.String, default: 'AxesHelper' },
-  visible: { type: ECSYTypes.Boolean, default: true },
 };

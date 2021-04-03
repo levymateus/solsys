@@ -1,4 +1,3 @@
-import { AxesHelper } from 'three';
 import { Engine } from './ecs';
 
 import './global.css';
@@ -15,10 +14,9 @@ const remoteDevtools = isEnvDevelopment && devTools;
 const engine = new Engine({ remoteDevtools }).start();
 
 if (isEnvDevelopment) {
-  const axesHelper = new AxesHelper();
-  engine.addGameObject(import('./game/Box3'), null, [axesHelper]);
+  engine.addGameObject(import('./game/Box3'));
 }
 
 if (!isEnvDevelopment) {
-  engine.addGameObject(import('./game/Box3'), null, []);
+  engine.addGameObject(import('./game/Box3'));
 }
