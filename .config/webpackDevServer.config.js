@@ -1,38 +1,32 @@
 const paths = require('./paths');
-const {
-  prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
+const ip = require('internal-ip');
+const portFinderSync = require('portfinder-sync');
 
-const HOST = process.env.HOST || '0.0.0.0';
+const info = (msg) => `\u001b[1m\u001b[34m${msg}\u001b[39m\u001b[22m`
+
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 module.exports = () => {
-	const protocol = 'http';
-
-	const urls = prepareUrls(
-		protocol,
-		HOST,
-		PORT,
-		paths.publicUrlOrPath.slice(0, -1)
-	);
-
-	const allowedHost = urls.lanUrlForConfig;
-
 	return {
-		before: function(_, server) {
-			server._watch(paths.appPublic);
-		},
-		disableHostCheck: true,
-		watchContentBase: true,
-		transportMode: 'ws',
-		injectClient: false,
+		host: process.env.HOST || '0.0.0.0',
+		port: portFinderSync.getPort(PORT),
 		contentBase: paths.appPublic,
-		contentBasePublicPath: paths.publicUrlOrPath,
-		hot: true,
-		port: PORT,
-		host: HOST,
-		quiet: true,
-		overlay: false,
-		public: allowedHost + ':' + PORT,
+		watchContentBase: true,
+		open: true,
+		https: false,
+		useLocalIp: true,
+		disableHostCheck: true,
+		overlay: true,
+		noInfo: true,
+		after: function(app, server, compiler)
+		{
+			const port = server.options.port
+			const protocol = server.options.https ? 'https' : 'http'
+			const localIp = ip.v4.sync()
+			const domain1 = `${protocol}://${localIp}:${port}`
+			const domain2 = `${protocol}://localhost:${port}`
+
+			console.log(`Project running at:\n  - ${info(domain1)}\n  - ${info(domain2)}`)
+		}
 	};
 }

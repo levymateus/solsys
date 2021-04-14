@@ -19,6 +19,7 @@ const paths = require('./paths');
 const createDevServer = require('./webpackDevServer.config');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
@@ -29,6 +30,8 @@ module.exports = function(webpackEnv) {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
 		entry: paths.appIndexJs,
 
+    devtool: isEnvDevelopment ? 'source-map' : undefined,
+
     plugins: [
       new webpack.ProgressPlugin(),
       new MiniCssExtractPlugin({
@@ -37,6 +40,11 @@ module.exports = function(webpackEnv) {
       new HtmlWebpackPlugin({
         title: 'My App',
         template: paths.appHtml,
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: path.resolve(__dirname, '../static') }
+        ]
       }),
     ],
 
@@ -47,16 +55,22 @@ module.exports = function(webpackEnv) {
 
     module: {
       rules: [
+
+        // Javascript
         {
           test: /\.(js|jsx)$/,
           include: [path.resolve(__dirname, 'src')],
           loader: 'babel-loader',
         },
+
+        // Typescript
         {
           test: /\.ts?$/,
           use: 'ts-loader',
           exclude: /node_modules/,
         },
+
+        // CSS
         {
           test: /.css$/,
 
@@ -70,6 +84,21 @@ module.exports = function(webpackEnv) {
             },
           ],
         },
+
+        // Images
+        {
+          test: /\.(jpg|png|gif|svg)$/,
+          use:
+          [
+            {
+              loader: 'file-loader',
+              options:
+              {
+                  outputPath: 'assets/images/'
+              }
+            }
+          ]
+        },
       ],
     },
 
@@ -78,5 +107,9 @@ module.exports = function(webpackEnv) {
     },
 
     devServer: devServer,
+
+    stats: {
+      preset: "errors-only",
+    }
   }
 };

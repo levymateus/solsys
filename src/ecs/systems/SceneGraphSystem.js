@@ -1,6 +1,6 @@
 import { System } from 'ecsy';
 import { Object3DComponent } from 'ecsy-three';
-import { Node } from '../core/Components';
+import { Node } from '../Components';
 
 export class SceneGraphSystem extends System {
   execute() {

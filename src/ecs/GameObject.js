@@ -5,7 +5,7 @@
  * The Game Object is an abstraction of a object of game in a world.
  * This holds all the game object behaviours and logic.
  */
-export class GameObject {
+export class GameObjectAbstract {
   onStart() {}
 
   /**
@@ -16,6 +16,6 @@ export class GameObject {
   onUpdate(delta, time) {}
 }
 
-GameObject.components = [];
+GameObjectAbstract.components = [];
 
-export default GameObject;
+export default GameObjectAbstract;

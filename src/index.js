@@ -11,12 +11,11 @@ const isEnvDevelopment = process.env.NODE_ENV === 'development';
  */
 const remoteDevtools = isEnvDevelopment && devTools;
 
-const engine = new Engine({ remoteDevtools }).start();
+const canvas = document.querySelector('canvas.webgl');
+document.title = 'Three.js | SolarSystem';
 
-if (isEnvDevelopment) {
-  engine.addGameObject(import('./game/Box3'));
-}
+const engine = new Engine({ remoteDevtools, canvas });
+engine.start();
 
-if (!isEnvDevelopment) {
-  engine.addGameObject(import('./game/Box3'));
-}
+engine.addGameObject(import('./scripts/Moon'));
+engine.addGameObject(import('./scripts/Sun'));

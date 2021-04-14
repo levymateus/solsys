@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
-export const warning = (message) => console.warn(message);
 
-export const randomInteger = (start = 0, end = 1) => Math.trunc(Math.random() * end) + start;
+export const camelize = (str) => str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase())).replace(/\s+/g, '');

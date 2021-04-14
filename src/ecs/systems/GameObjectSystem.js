@@ -1,7 +1,8 @@
 import { System, Not } from 'ecsy';
 import { Clock } from 'three';
 import { Object3DComponent } from 'ecsy-three';
-import { GameObject } from '../core/Components';
+import { GameObject } from '../Components';
+import { camelize } from '../utils';
 
 export class GameObjectSystem extends System {
   init() {
@@ -13,9 +14,10 @@ export class GameObjectSystem extends System {
       const gameObject = entity.getComponent(GameObject).module;
 
       Object.values(entity.getComponents()).forEach((component) => {
-        if (component.getName() !== GameObject.getName()) {
-          gameObject.prototype.constructor[component.getName()] = component;
-        }
+        const keys = Object.keys(component);
+        gameObject.prototype.constructor[
+          camelize(component.getName())
+        ] = keys.length === 1 ? component[keys[0]] : component;
       });
 
       const thisArg = { ...gameObject.prototype.constructor };

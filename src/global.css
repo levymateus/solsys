@@ -1,78 +1,15 @@
-body {
+* {
 	margin: 0;
 	padding: 0;
 }
 
-.visible {
-	visibility: visible;
+body,
+html {
+	background-color: rgb(24, 24, 24);
 }
 
-.hidden {
-	visibility: hidden;
-}
-
-.fps-container {
-	color: white;
-	width: 64px;
+.webgl {
 	position: absolute;
-	right: 0;
-	padding: 4px;
-	display: flex;
-}
-
-#fps-display {
-	font-weight: bold;
-	padding: 0 4px;
-}
-
-.error {
-	color: red;
-}
-
-.default {
-	color: white;
-}
-
-.left-side-menu {
-	position: absolute;
-	left: 0;
 	top: 0;
-	margin: 0;
-	display: flex;
-	width: 256px;
-	height: 100%;
-	background-color: rgb(32, 32, 32);
-	color: white;
-	box-sizing: border-box;
-}
-
-.flex-box {
-	display: flex;
-}
-
-.flex-row {
-	flex-direction: row;
-}
-
-.inspector {
-	width: 100%;
-	padding: 4px;
-	box-sizing: border-box;
-}
-
-.inspector .property {
-	width: 100%;
-	padding: 4px 8px;
-	box-sizing: border-box;
-}
-
-.inspector .property label {
-	display: flex;
-	flex: 1 1 auto;
-}
-
-.inspector .property input {
-	background-color: rgb(100, 100, 100);
-	display: flex;
-	flex: 1 1 auto;
+	left: 0;
 }
