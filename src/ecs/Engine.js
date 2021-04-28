@@ -98,6 +98,7 @@ export class Engine {
     // ----- Cameras -----
     this.camera.position.set(5, 5, 3);
     this.camera.lookAt(0, 0, 0);
+    this.camera.zoom = 0.7;
 
     const cameraGUI = this.gui.addFolder('Camera');
     cameraGUI.add(this.camera, 'fov')

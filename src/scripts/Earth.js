@@ -2,13 +2,13 @@ import { Vector3 } from 'three';
 import * as ECS from '../ecs';
 
 const velocity = new Vector3(1, -1, 0);
-const radius = 3;
+const radius = 8;
 const pivot = new Vector3(0, 0, 0);
 const translationSpeed = 0.25;
 
 let theta = 0;
 
-class Moon extends ECS.GameObjectAbstract {
+export class Earth extends ECS.GameObjectAbstract {
   onUpdate(delta) {
     this.translation.rotation.y += delta * velocity.y * 0.7;
 
@@ -28,21 +28,20 @@ class Moon extends ECS.GameObjectAbstract {
   }
 }
 
-Moon.components = [
+Earth.components = [
   [ECS.Translation],
   [ECS.Geometry, {
     primitive: 'Sphere',
-    radius: 0.1,
+    radius: 0.5,
     widthSegments: 64,
     heightSegments: 64,
   }],
   [ECS.Material, {
-    name: 'Moon - Material',
-    map: '/textures/moon_texture.jpg',
-    normalMap: '/textures/moon_normal_map.png',
+    name: 'Earth - Material',
+    map: '/textures/earth_texture.jpg',
+    // normalMap: '/textures/earth_normal_map.png',
     color: [1, 1, 1],
   }],
 ];
 
-export { Moon };
-export default Moon;
+export default Earth;

@@ -17,5 +17,7 @@ document.title = 'Three.js | SolarSystem';
 const engine = new Engine({ remoteDevtools, canvas });
 engine.start();
 
-engine.addGameObject(import('./scripts/Moon'));
+// TODO: fix children system
+
+engine.addGameObject(import('./scripts/Earth'), null, []);
 engine.addGameObject(import('./scripts/Sun'));
