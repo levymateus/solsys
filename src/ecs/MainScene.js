@@ -10,13 +10,12 @@ import MousePicking from './MousePicking';
 import * as COMPS from './Components';
 
 import World from './World';
-import { GameObjectSystem } from './systems/GameObjectSystem';
-import { SceneGraphSystem } from './systems/SceneGraphSystem';
 import TranslationSystem from './systems/TranslationSystem';
 import GeometrySystem from './systems/GeometrySystem';
 import MaterialSystem from './systems/MaterialSystem';
+import OrbitSystem from './systems/OrbitSystem';
 
-export class Engine {
+export class MainScene {
   constructor({
     remoteDevtools = false, antialias = true, canvas = undefined,
   }) {
@@ -90,11 +89,6 @@ export class Engine {
     this.controls.orbit = new OrbitControls(this.camera, this.canvas);
     this.controls.orbit.update();
 
-    // ----- Helpers -----
-    const axesHelper = new THREE.AxesHelper(5);
-    axesHelper.position.set(0, 0, 0);
-    this.scene.add(axesHelper);
-
     // ----- Cameras -----
     this.camera.position.set(5, 5, 3);
     this.camera.lookAt(0, 0, 0);
@@ -118,7 +112,7 @@ export class Engine {
     // ----- Lights -----
     const pointLigth = new THREE.PointLight(
       new THREE.Color(252 * 0.01, 227 * 0.01, 167 * 0.01),
-      0.5,
+      1,
     );
     pointLigth.position.set(0, 0, 0);
     this.scene.add(pointLigth);
@@ -127,7 +121,7 @@ export class Engine {
     pointLightGUI.add(pointLigth.position, 'x', 0, 10, 0.01).setValue(0);
     pointLightGUI.add(pointLigth.position, 'y', 0, 10, 0.01).setValue(0);
     pointLightGUI.add(pointLigth.position, 'z', 0, 10, 0.01).setValue(0);
-    pointLightGUI.add(pointLigth, 'intensity', 0, 100, 0.01).setValue(0.5);
+    pointLightGUI.add(pointLigth, 'intensity', 0, 100, 0.01).setValue(1);
 
     const pointLightHelper = new THREE.PointLightHelper(pointLigth, 0.5);
     pointLightHelper.position.set(0, 0, 0);
@@ -137,19 +131,18 @@ export class Engine {
     this.controls.orbit = new OrbitControls(this.camera, this.canvas);
     this.controls.orbit.update();
 
-    world.registerComponent(COMPS.Node);
     world.registerComponent(COMPS.Translation);
     world.registerComponent(COMPS.Geometry);
-    world.registerComponent(COMPS.GameObject);
     world.registerComponent(COMPS.Material);
-    world.registerComponent(COMPS.StateComponentGeometry);
+    world.registerComponent(COMPS.Orbit);
+
     world.registerComponent(COMPS.StateComponentMaterial);
+    world.registerComponent(COMPS.StateComponentGeometry);
 
     world.registerSystem(TranslationSystem);
     world.registerSystem(GeometrySystem);
-    world.registerSystem(GameObjectSystem);
-    world.registerSystem(SceneGraphSystem);
     world.registerSystem(MaterialSystem);
+    world.registerSystem(OrbitSystem);
 
     window.addEventListener('resize', () => {
       this.aspect = window.innerWidth / window.innerHeight;
@@ -172,13 +165,9 @@ export class Engine {
     this.world?.stop();
   }
 
-  addGameObject(gameObjectPromise, parent, children) {
-    gameObjectPromise
-      .then((gameObject) => {
-        this.world.createGameObject(gameObject.default, parent || this.sceneEntity, children);
-      })
-      .catch((error) => { throw new Error(error); });
+  add({ name, parent }) {
+    return this.world?.add(name, parent || this.sceneEntity);
   }
 }
 
-export default Engine;
+export default MainScene;

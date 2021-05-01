@@ -1,3 +1,2 @@
-export { Engine } from './Engine';
+export * from './MainScene';
 export * from './Components';
-export * from './GameObject';

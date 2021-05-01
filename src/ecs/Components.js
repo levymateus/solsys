@@ -46,15 +46,9 @@ Geometry.schema = {
   heightSegments: { type: ECSYTypes.Number, default: 64 },
 };
 
-export class Node extends Component {}
+export class Orbit extends Component {}
 
-Node.schema = {
-  parent: { type: ECSYTypes.Ref },
-  children: { type: ECSYTypes.Ref },
-};
-
-export class GameObject extends Component {}
-
-GameObject.schema = {
-  module: { type: ECSYTypes.Ref },
+Orbit.schema = {
+  radius: { type: ECSYTypes.Number, default: 1 },
+  center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
 };

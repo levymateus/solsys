@@ -3,18 +3,18 @@ import { Object3DComponent } from 'ecsy-three';
 import { Translation } from '../Components';
 
 class TranslationSystem extends System {
-  execute() {
+  execute(delta) {
     this.queries.entities.results.forEach((entity) => {
       const object3d = entity.getObject3D();
       const translation = entity.getComponent(Translation);
 
-      object3d.rotation.x = translation.rotation.x;
-      object3d.rotation.y = translation.rotation.y;
-      object3d.rotation.z = translation.rotation.z;
+      object3d.rotation.x += delta * translation.rotation.x;
+      object3d.rotation.y += delta * translation.rotation.y;
+      object3d.rotation.z += delta * translation.rotation.z;
 
-      object3d.position.x = translation.position.x;
-      object3d.position.y = translation.position.y;
-      object3d.position.z = translation.position.z;
+      object3d.position.x = delta * translation.position.x;
+      object3d.position.y = delta * translation.position.y;
+      object3d.position.z = delta * translation.position.z;
     });
   }
 }
