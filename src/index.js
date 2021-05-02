@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { MainScene } from './ecs';
 import {
-  Translation, Geometry, Material, Orbit,
+  Translation, Geometry, Material, Orbit, Particles,
 } from './ecs/Components';
 
 import './global.css';
@@ -19,6 +19,9 @@ const canvas = document.querySelector('canvas.webgl');
 document.title = 'Three.js | SolarSystem';
 
 const mainScene = new MainScene({ remoteDevtools, canvas }).start();
+
+mainScene.add({ name: 'Starfield' })
+  .addComponent(Particles, { count: 250000 });
 
 // planet
 mainScene.add({ name: 'Sun' })
@@ -45,7 +48,7 @@ const Earth = mainScene.add({ name: 'Earth' })
   })
   .addComponent(Geometry, {
     primitive: 'Sphere',
-    radius: 0.3,
+    radius: 0.2,
     widthSegments: 64,
     heightSegments: 64,
   })
@@ -66,7 +69,7 @@ mainScene.add({ name: 'Moon', parent: Earth })
   })
   .addComponent(Geometry, {
     primitive: 'Sphere',
-    radius: 0.1,
+    radius: 0.2 / 2,
     widthSegments: 64,
     heightSegments: 64,
   })

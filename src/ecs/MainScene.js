@@ -5,8 +5,6 @@ import { enableRemoteDevtools } from 'ecsy';
 import { GUI } from 'dat.gui';
 import Stats from 'stats.js';
 
-import MousePicking from './MousePicking';
-
 import * as COMPS from './Components';
 
 import World from './World';
@@ -14,6 +12,7 @@ import TranslationSystem from './systems/TranslationSystem';
 import GeometrySystem from './systems/GeometrySystem';
 import MaterialSystem from './systems/MaterialSystem';
 import OrbitSystem from './systems/OrbitSystem';
+import StartFieldSystem from './systems/StarfieldSystem';
 
 export class MainScene {
   constructor({
@@ -45,7 +44,6 @@ export class MainScene {
     this.clock = new THREE.Clock();
     this.perspectiveCamera = new THREE.PerspectiveCamera(75, this.aspect, 1, 1000);
 
-    this.mousePicking = new MousePicking();
     this.intersected = null;
 
     this.stats = new Stats();
@@ -61,6 +59,7 @@ export class MainScene {
    */
   initialize() {
     this.webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+    this.webGLRenderer.setClearColor(new THREE.Color(0, 0, 0), 1);
 
     // The Game loop
     const animationLoop = () => {
@@ -89,7 +88,7 @@ export class MainScene {
     this.controls.orbit = new OrbitControls(this.camera, this.canvas);
     this.controls.orbit.update();
 
-    // ----- Cameras -----
+    // Cameras
     this.camera.position.set(5, 5, 3);
     this.camera.lookAt(0, 0, 0);
     this.camera.zoom = 0.7;
@@ -109,7 +108,7 @@ export class MainScene {
       .onChange(updateCamera);
     cameraGUI.open();
 
-    // ----- Lights -----
+    // Lights
     const pointLigth = new THREE.PointLight(
       new THREE.Color(252 * 0.01, 227 * 0.01, 167 * 0.01),
       1,
@@ -127,23 +126,29 @@ export class MainScene {
     pointLightHelper.position.set(0, 0, 0);
     this.scene.add(pointLightHelper);
 
-    // ----- Controls -----
+    // Controls
     this.controls.orbit = new OrbitControls(this.camera, this.canvas);
     this.controls.orbit.update();
 
+    // Components
     world.registerComponent(COMPS.Translation);
+    world.registerComponent(COMPS.Particles);
     world.registerComponent(COMPS.Geometry);
     world.registerComponent(COMPS.Material);
     world.registerComponent(COMPS.Orbit);
 
+    world.registerComponent(COMPS.StateComponentParticles);
     world.registerComponent(COMPS.StateComponentMaterial);
     world.registerComponent(COMPS.StateComponentGeometry);
 
+    // Systems
     world.registerSystem(TranslationSystem);
     world.registerSystem(GeometrySystem);
     world.registerSystem(MaterialSystem);
     world.registerSystem(OrbitSystem);
+    world.registerSystem(StartFieldSystem);
 
+    // Events Listners
     window.addEventListener('resize', () => {
       this.aspect = window.innerWidth / window.innerHeight;
       this.camera.aspect = this.aspect;

@@ -52,3 +52,15 @@ Orbit.schema = {
   radius: { type: ECSYTypes.Number, default: 1 },
   center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
 };
+
+export class Particles extends Component {}
+
+Particles.schema = {
+  count: { type: ECSYTypes.Number, default: 1 },
+};
+
+export class StateComponentParticles extends SystemStateComponent {}
+
+StateComponentParticles.schema = {
+  ref: { type: ECSYTypes.Ref },
+};
