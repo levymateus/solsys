@@ -1,4 +1,3 @@
-// import { GUI } from 'dat.gui';
 import { System, Not } from 'ecsy';
 import * as THREE from 'three';
 import { StateComponentMaterial, Material } from '../Components';
