@@ -38,8 +38,6 @@ class GeometrySystem extends System {
 
 GeometrySystem.queries = {
   added: { components: [Geometry, StateComponentMaterial, Not(StateComponentGeometry)] },
-  remove: { components: [Not(Geometry), StateComponentGeometry] },
-  normal: { components: [Geometry, StateComponentGeometry] },
 };
 
 export default GeometrySystem;

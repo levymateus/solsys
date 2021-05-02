@@ -33,16 +33,6 @@ class MaterialSystem extends System {
       mesh.roughness = material.roughness;
       mesh.wireframe = material.wireframe;
 
-      // const gui = new GUI({ name: material.name });
-      // const materialGUI = gui.addFolder(material.name);
-      // const palette = { rgb: [255, 255, 255] };
-      // materialGUI.addColor(palette, 'rgb')
-      //   .listen()
-      //   .name('color')
-      //   .onChange(([r, g, b]) => {
-      //     mesh.color.setRGB(r / 255, g / 255, b / 255);
-      //   });
-
       entity.addComponent(StateComponentMaterial, {
         ref: mesh,
       });
