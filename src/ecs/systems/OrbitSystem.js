@@ -10,15 +10,15 @@ class OrbitSystem extends System {
   execute(delta) {
     this.queries.onUpdate.results.forEach((entity) => {
       const object3d = entity.getObject3D();
-      const orbit = entity.getComponent(Orbit);
+      const { center, radius, d } = entity.getComponent(Orbit);
 
-      this.theta += delta * 0.09;
+      this.theta += delta * 0.025;
       if (this.theta >= 2 * Math.PI) {
         this.theta = 0;
       }
 
-      object3d.position.x = orbit.center.x + orbit.radius * Math.cos(this.theta) * 1;
-      object3d.position.z = orbit.center.z + orbit.radius * Math.sin(this.theta) * 0.8;
+      object3d.position.x = center.x + radius * Math.cos(this.theta) * d.x;
+      object3d.position.z = center.z + radius * Math.sin(this.theta) * d.z;
     });
   }
 }

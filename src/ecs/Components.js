@@ -40,7 +40,7 @@ export class Geometry extends Component {}
 Geometry.schema = {
   name: { type: ECSYTypes.String, default: 'Geometry' },
   type: { type: ECSYTypes.String, default: 'SphereBufferGeometry' },
-  primitive: { type: ECSYTypes.String, default: 'Box' },
+  primitive: { type: ECSYTypes.String, default: 'Sphere' },
   radius: { type: ECSYTypes.Number, default: 0.5 },
   widthSegments: { type: ECSYTypes.Number, default: 64 },
   heightSegments: { type: ECSYTypes.Number, default: 64 },
@@ -51,6 +51,7 @@ export class Orbit extends Component {}
 Orbit.schema = {
   radius: { type: ECSYTypes.Number, default: 1 },
   center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
+  d: { type: ThreeTypes.Vector3, default: new THREE.Vector3(1, 1, 1) },
 };
 
 export class Particles extends Component {}
@@ -62,5 +63,21 @@ Particles.schema = {
 export class StateComponentParticles extends SystemStateComponent {}
 
 StateComponentParticles.schema = {
+  ref: { type: ECSYTypes.Ref },
+};
+
+export class Path extends Component {}
+
+Path.schema = {
+  color: { type: ECSYTypes.Array, default: [1, 1, 1] },
+  center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
+  radius: { type: ECSYTypes.Number, default: 1 },
+  d: { type: ThreeTypes.Vector3, default: new THREE.Vector3(1, 1, 1) },
+  visible: { type: ECSYTypes.Boolean, default: true },
+};
+
+export class StateComponentPath extends Component {}
+
+StateComponentPath.schema = {
   ref: { type: ECSYTypes.Ref },
 };

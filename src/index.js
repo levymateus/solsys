@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { MainScene } from './ecs';
 import {
-  Translation, Geometry, Material, Orbit, Particles,
+  Translation, Geometry, Material, Orbit, Particles, Path,
 } from './ecs/Components';
 
 import './global.css';
@@ -23,9 +23,18 @@ const mainScene = new MainScene({ remoteDevtools, canvas }).start();
 mainScene.add({ name: 'Starfield' })
   .addComponent(Particles, { count: 250000 });
 
+mainScene.add({ name: 'EathOrbitPath' })
+  .addComponent(Path, {
+    radius: 5,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: true,
+  });
+
 // planet
 mainScene.add({ name: 'Sun' })
-  .addComponent(Translation)
+  .addComponent(Translation, {
+    position: new THREE.Vector3(0, 0, 0),
+  })
   .addComponent(Geometry, {
     primitive: 'Sphere',
     radius: 1,
@@ -44,7 +53,7 @@ mainScene.add({ name: 'Sun' })
 // earth
 const Earth = mainScene.add({ name: 'Earth' })
   .addComponent(Translation, {
-    rotation: new THREE.Vector3(0, -1, 0),
+    rotation: new THREE.Vector3(0, 1, 0),
   })
   .addComponent(Geometry, {
     primitive: 'Sphere',
@@ -58,9 +67,17 @@ const Earth = mainScene.add({ name: 'Earth' })
     color: [1, 1, 1],
   })
   .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
     radius: 5,
+    d: new THREE.Vector3(1, 1, 2),
   });
 // end earth
+
+mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
+  .addComponent(Path, {
+    radius: 1,
+    visible: true,
+  });
 
 // moon
 mainScene.add({ name: 'Moon', parent: Earth })

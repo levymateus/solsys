@@ -13,6 +13,7 @@ import GeometrySystem from './systems/GeometrySystem';
 import MaterialSystem from './systems/MaterialSystem';
 import OrbitSystem from './systems/OrbitSystem';
 import StartFieldSystem from './systems/StarfieldSystem';
+import PathSystem from './systems/PathSystem';
 
 export class MainScene {
   constructor({
@@ -136,7 +137,9 @@ export class MainScene {
     world.registerComponent(COMPS.Geometry);
     world.registerComponent(COMPS.Material);
     world.registerComponent(COMPS.Orbit);
+    world.registerComponent(COMPS.Path);
 
+    world.registerComponent(COMPS.StateComponentPath);
     world.registerComponent(COMPS.StateComponentParticles);
     world.registerComponent(COMPS.StateComponentMaterial);
     world.registerComponent(COMPS.StateComponentGeometry);
@@ -147,6 +150,7 @@ export class MainScene {
     world.registerSystem(MaterialSystem);
     world.registerSystem(OrbitSystem);
     world.registerSystem(StartFieldSystem);
+    world.registerSystem(PathSystem);
 
     // Events Listners
     window.addEventListener('resize', () => {
