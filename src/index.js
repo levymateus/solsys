@@ -158,3 +158,33 @@ mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
     visible: showOrbitPaths,
   });
 // end moon
+
+// mars
+mainScene.add({ name: 'Mars' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 2, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.09,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'MarsAtmosphere',
+    map: '/textures/mars_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 7,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'MarsOrbitPath' })
+  .addComponent(Path, {
+    radius: 7,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end mars
+
