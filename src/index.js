@@ -188,3 +188,32 @@ mainScene.add({ name: 'MarsOrbitPath' })
   });
 // end mars
 
+// jupiter
+mainScene.add({ name: 'Jupiter' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 2, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.4,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'MarsAtmosphere',
+    map: '/textures/jupiter_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 9,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'JupiterOrbitPath' })
+  .addComponent(Path, {
+    radius: 9,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end jupiter
+
