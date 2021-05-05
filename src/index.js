@@ -125,11 +125,13 @@ const Earth = mainScene.add({ name: 'Earth' })
   });
 // end earth
 
-mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
+mainScene.add({ name: 'EathOrbitPath' })
   .addComponent(Path, {
-    radius: 1,
-    visible: true,
+    radius: 5,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
   });
+// end earth
 
 // moon
 mainScene.add({ name: 'Moon', parent: Earth })
@@ -148,6 +150,11 @@ mainScene.add({ name: 'Moon', parent: Earth })
     color: [1, 1, 1],
   })
   .addComponent(Orbit, {
-    radius: 1,
+    radius: 0.7,
+  });
+mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
+  .addComponent(Path, {
+    radius: 0.7,
+    visible: showOrbitPaths,
   });
 // end moon
