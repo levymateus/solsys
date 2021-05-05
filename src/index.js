@@ -72,6 +72,36 @@ mainScene.add({ name: 'MercuryOrbitPath' })
     visible: showOrbitPaths,
   });
 // end mercury
+
+// venus
+mainScene.add({ name: 'Venus' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 1, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.2,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'VenusAtmosphere',
+    map: '/textures/venus_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 3,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'VenusOrbitPath' })
+  .addComponent(Path, {
+    radius: 3,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end venus
+
 // earth
 const Earth = mainScene.add({ name: 'Earth' })
   .addComponent(Translation, {
