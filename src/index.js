@@ -19,16 +19,10 @@ const canvas = document.querySelector('canvas.webgl');
 document.title = 'Three.js | SolarSystem';
 
 const mainScene = new MainScene({ remoteDevtools, canvas }).start();
+const showOrbitPaths = true;
 
 mainScene.add({ name: 'Starfield' })
   .addComponent(Particles, { count: 250000 });
-
-mainScene.add({ name: 'EathOrbitPath' })
-  .addComponent(Path, {
-    radius: 5,
-    d: new THREE.Vector3(1, 1, 2),
-    visible: true,
-  });
 
 // planet
 mainScene.add({ name: 'Sun' })
@@ -37,7 +31,7 @@ mainScene.add({ name: 'Sun' })
   })
   .addComponent(Geometry, {
     primitive: 'Sphere',
-    radius: 1,
+    radius: 1.7,
     widthSegments: 64,
     heightSegments: 64,
   })
@@ -50,6 +44,34 @@ mainScene.add({ name: 'Sun' })
   });
 // end planet
 
+// mecury
+mainScene.add({ name: 'Mercury' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 1, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.09,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'MercuryAtmosphere',
+    map: '/textures/mercury_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 2,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'MercuryOrbitPath' })
+  .addComponent(Path, {
+    radius: 2,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end mercury
 // earth
 const Earth = mainScene.add({ name: 'Earth' })
   .addComponent(Translation, {
