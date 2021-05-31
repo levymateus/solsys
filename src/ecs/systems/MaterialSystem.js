@@ -14,18 +14,19 @@ class MaterialSystem extends System {
       let mesh = null;
       switch (material.type) {
         case 'MeshBasicMaterial':
-          mesh = new THREE.MeshBasicMaterial();
+          mesh = new THREE.MeshBasicMaterial({
+            color: material.color,
+            transparent: material.transparent,
+            side: material.side,
+          });
           break;
         default:
           mesh = new THREE.MeshStandardMaterial();
           break;
       }
 
-      mesh.color = new THREE.Color(
-        material.color[0],
-        material.color[1],
-        material.color[2],
-      );
+      const [r, g, b] = material.color;
+      mesh.color = new THREE.Color(r, g, b);
       mesh.map = map;
       mesh.normalMap = normalMap;
       mesh.metalness = material.metalness;

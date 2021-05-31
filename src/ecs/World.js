@@ -8,9 +8,11 @@ export class ECSWorld extends ECSYThreeWorld {
   }
 
   add(name, parent) {
+    const object = new THREE.Object3D();
+    object.name = name;
     return this.entityManager
       .createEntity(name)
-      .addObject3DComponent(new THREE.Object3D(), parent);
+      .addObject3DComponent(object, parent);
   }
 }
 

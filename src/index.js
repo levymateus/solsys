@@ -1,3 +1,4 @@
+import { Object3DComponent } from 'ecsy-three';
 import * as THREE from 'three';
 import { MainScene } from './ecs';
 import {
@@ -16,9 +17,9 @@ const isEnvDevelopment = process.env.NODE_ENV === 'development';
 const remoteDevtools = isEnvDevelopment && devTools;
 
 const canvas = document.querySelector('canvas.webgl');
-document.title = 'Three.js | SolarSystem';
+document.title = 'Three.js | Solar System';
 
-const mainScene = new MainScene({ remoteDevtools, canvas }).start();
+const mainScene = new MainScene({ remoteDevtools, canvas });
 const showOrbitPaths = true;
 
 mainScene.add({ name: 'Starfield' })
@@ -123,7 +124,6 @@ const Earth = mainScene.add({ name: 'Earth' })
     radius: 5,
     d: new THREE.Vector3(1, 1, 2),
   });
-// end earth
 
 mainScene.add({ name: 'EathOrbitPath' })
   .addComponent(Path, {
@@ -217,3 +217,54 @@ mainScene.add({ name: 'JupiterOrbitPath' })
   });
 // end jupiter
 
+// saturn
+const Saturn = mainScene.add({ name: 'Saturn' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 2, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.4,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'SaturnAtmosphere',
+    map: '/textures/saturn_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 13,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+
+const SaturnRings = mainScene.add({ name: 'SaturnRings', parent: Saturn })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 0, 0),
+  })
+  .addComponent(Geometry, {
+    type: 'RingBufferGeometry',
+    innerRadius: 0.6,
+    outerRadius: 1.6,
+    thetaSegments: 64.0,
+    phiSegments: 8.0,
+    thetaLength: 360.0,
+  })
+  .addComponent(Material, {
+    type: 'MeshBasicMaterial',
+    name: 'SaturnRingMaterial',
+    map: '/textures/saturn_ring_texture.png',
+    side: THREE.DoubleSide,
+    color: [1, 1, 1],
+    transparent: true,
+  });
+SaturnRings.getComponent(Object3DComponent).value.rotation.set(Math.PI / 2, 0, 0);
+
+mainScene.add({ name: 'SaturnOrbitPath' })
+  .addComponent(Path, {
+    radius: 13,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end saturn

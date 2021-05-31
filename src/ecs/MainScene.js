@@ -53,6 +53,12 @@ export class MainScene {
     if (remoteDevtools) {
       enableRemoteDevtools();
     }
+
+    try {
+      this.initialize();
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   /**
@@ -158,16 +164,6 @@ export class MainScene {
       this.camera.aspect = this.aspect;
       this.webGLRenderer.setSize(window.innerWidth, window.innerHeight);
     }, true);
-  }
-
-  start() {
-    try {
-      this.initialize();
-    } catch (error) {
-      this.stop();
-      throw new Error(error);
-    }
-    return this;
   }
 
   stop() {

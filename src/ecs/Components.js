@@ -33,6 +33,8 @@ Material.schema = {
   metalness: { type: ECSYTypes.Number, default: 0.7 },
   roughness: { type: ECSYTypes.Number, default: 0.7 },
   color: { type: ECSYTypes.Array, default: [1, 1, 1] },
+  side: { type: ECSYTypes.Ref },
+  transparent: { type: ECSYTypes.Boolean, default: false },
 };
 
 export class Geometry extends Component {}
@@ -44,6 +46,9 @@ Geometry.schema = {
   radius: { type: ECSYTypes.Number, default: 0.5 },
   widthSegments: { type: ECSYTypes.Number, default: 64 },
   heightSegments: { type: ECSYTypes.Number, default: 64 },
+  innerRadius: { type: ECSYTypes.Number, default: 0.5 },
+  outerRadius: { type: ECSYTypes.Number, default: 1 },
+  thetaSegments: { type: ECSYTypes.Number, default: 8 },
 };
 
 export class Orbit extends Component {}
@@ -52,6 +57,7 @@ Orbit.schema = {
   radius: { type: ECSYTypes.Number, default: 1 },
   center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
   d: { type: ThreeTypes.Vector3, default: new THREE.Vector3(1, 1, 1) },
+  thetaStart: { type: ECSYTypes.Number, default: 0 },
 };
 
 export class Particles extends Component {}
