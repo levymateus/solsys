@@ -58,6 +58,7 @@ Orbit.schema = {
   center: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
   d: { type: ThreeTypes.Vector3, default: new THREE.Vector3(1, 1, 1) },
   thetaStart: { type: ECSYTypes.Number, default: 0 },
+  step: { type: ECSYTypes.Number, default: 0.09 },
 };
 
 export class Particles extends Component {}

@@ -20,7 +20,7 @@ const canvas = document.querySelector('canvas.webgl');
 document.title = 'Three.js | Solar System';
 
 const mainScene = new MainScene({ remoteDevtools, canvas });
-const showOrbitPaths = true;
+const showOrbitPaths = false;
 
 mainScene.add({ name: 'Starfield' })
   .addComponent(Particles, { count: 250000 });
@@ -65,6 +65,7 @@ mainScene.add({ name: 'Mercury' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 2,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.08,
   });
 mainScene.add({ name: 'MercuryOrbitPath' })
   .addComponent(Path, {
@@ -94,6 +95,7 @@ mainScene.add({ name: 'Venus' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 3,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.07,
   });
 mainScene.add({ name: 'VenusOrbitPath' })
   .addComponent(Path, {
@@ -123,6 +125,7 @@ const Earth = mainScene.add({ name: 'Earth' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 5,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.06,
   });
 
 mainScene.add({ name: 'EathOrbitPath' })
@@ -151,6 +154,7 @@ mainScene.add({ name: 'Moon', parent: Earth })
   })
   .addComponent(Orbit, {
     radius: 0.7,
+    step: 0.01,
   });
 mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
   .addComponent(Path, {
@@ -179,6 +183,7 @@ mainScene.add({ name: 'Mars' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 7,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.05,
   });
 mainScene.add({ name: 'MarsOrbitPath' })
   .addComponent(Path, {
@@ -208,6 +213,7 @@ mainScene.add({ name: 'Jupiter' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 9,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.04,
   });
 mainScene.add({ name: 'JupiterOrbitPath' })
   .addComponent(Path, {
@@ -237,6 +243,7 @@ const Saturn = mainScene.add({ name: 'Saturn' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 13,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.03,
   });
 
 const SaturnRings = mainScene.add({ name: 'SaturnRings', parent: Saturn })
@@ -289,6 +296,7 @@ mainScene.add({ name: 'Uranus' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 16,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.02,
   });
 mainScene.add({ name: 'UranusPath' })
   .addComponent(Path, {
@@ -318,6 +326,7 @@ mainScene.add({ name: 'Neptune' })
     center: new THREE.Vector3(0, 0, 0),
     radius: 18,
     d: new THREE.Vector3(1, 1, 2),
+    step: 0.01,
   });
 mainScene.add({ name: 'NeptunePath' })
   .addComponent(Path, {
