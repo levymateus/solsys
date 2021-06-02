@@ -268,3 +268,61 @@ mainScene.add({ name: 'SaturnOrbitPath' })
     visible: showOrbitPaths,
   });
 // end saturn
+
+// Uranus
+mainScene.add({ name: 'Uranus' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 2, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.28,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'UranusAtmosphere',
+    map: '/textures/uranus_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 16,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'UranusPath' })
+  .addComponent(Path, {
+    radius: 16,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end uranus
+
+// Neptune
+mainScene.add({ name: 'Neptune' })
+  .addComponent(Translation, {
+    rotation: new THREE.Vector3(0, 2, 0),
+  })
+  .addComponent(Geometry, {
+    primitive: 'Sphere',
+    radius: 0.28,
+    widthSegments: 64,
+    heightSegments: 64,
+  })
+  .addComponent(Material, {
+    name: 'UranusAtmosphere',
+    map: '/textures/neptune_texture.jpg',
+    color: [1, 1, 1],
+  })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: 18,
+    d: new THREE.Vector3(1, 1, 2),
+  });
+mainScene.add({ name: 'NeptunePath' })
+  .addComponent(Path, {
+    radius: 18,
+    d: new THREE.Vector3(1, 1, 2),
+    visible: showOrbitPaths,
+  });
+// end neptune
