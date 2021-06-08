@@ -17,7 +17,7 @@ import PathSystem from './systems/PathSystem';
 
 export class MainScene {
   constructor({
-    remoteDevtools = false, antialias = true, canvas = undefined,
+    remoteDevtools = false, antialias = true, canvas = undefined, zoom = 0.1,
   }) {
     this.world = null;
     this.scene = null;
@@ -25,6 +25,7 @@ export class MainScene {
     this.input = null;
     this.sceneEntity = null;
     this.controls = {};
+    this.zoom = zoom;
     this.gui = new GUI();
 
     this.canvas = canvas;
@@ -43,7 +44,11 @@ export class MainScene {
     this.webGLRenderer.setPixelRatio(window.devicePixelRatio);
 
     this.clock = new THREE.Clock();
-    this.perspectiveCamera = new THREE.PerspectiveCamera(75, this.aspect, 1, 1000);
+
+    const size = 1;
+    const near = 5;
+    const far = 1000;
+    this.perspectiveCamera = new THREE.OrthographicCamera(-size, size, size, -size, near, far);
 
     this.intersected = null;
 
@@ -70,56 +75,39 @@ export class MainScene {
 
     // The Game loop
     const animationLoop = () => {
-      this.controls.orbit.update();
       this.stats.update();
+      this.controls.orbit.update();
       this.world.execute(this.clock.getDelta(), this.clock.elapsedTime);
     };
 
-    const updateCamera = () => {
-      this.camera?.updateProjectionMatrix();
-    };
+    const updateCamera = () => this.camera?.updateProjectionMatrix();
 
-    const {
-      world, scene, sceneEntity, camera,
-    } = ECSYTHREE.initialize(new World(), {
-      animationLoop,
-      camera: this.perspectiveCamera,
-      renderer: this.webGLRenderer,
-    });
+    const options = { animationLoop, camera: this.perspectiveCamera, renderer: this.webGLRenderer };
+    const ecsThree = ECSYTHREE.initialize(new World(), options);
 
-    this.world = world;
-    this.scene = scene;
-    this.sceneEntity = sceneEntity;
-    this.camera = camera;
+    this.world = ecsThree.world;
+    this.scene = ecsThree.scene;
+    this.camera = ecsThree.camera;
+    this.sceneEntity = ecsThree.sceneEntity;
 
     this.controls.orbit = new OrbitControls(this.camera, this.canvas);
     this.controls.orbit.update();
 
     // Cameras
-    this.camera.position.set(5, 5, 3);
+    this.camera.position.set(5, 10, 3);
     this.camera.lookAt(0, 0, 0);
-    this.camera.zoom = 0.7;
+    this.camera.zoom = this.zoom;
 
     const cameraGUI = this.gui.addFolder('Camera');
-    cameraGUI.add(this.camera, 'fov')
-      .min(1)
-      .max(180)
-      .step(0.01)
-      .name('fov')
-      .setValue(75)
-      .onChange(updateCamera);
-    cameraGUI.add(this.camera, 'zoom', 0, 1)
-      .step(0.0001)
+    cameraGUI.add(this.camera, 'zoom', -100, 100)
+      .step(0.001)
       .name('zoom')
-      .setValue(0.7)
+      .setValue(this.zoom)
       .onChange(updateCamera);
     cameraGUI.open();
 
     // Lights
-    const pointLigth = new THREE.PointLight(
-      new THREE.Color(252 * 0.01, 227 * 0.01, 167 * 0.01),
-      1,
-    );
+    const pointLigth = new THREE.PointLight(new THREE.Color(252 * 0.01, 227 * 0.01, 167 * 0.01), 1);
     pointLigth.position.set(0, 0, 0);
     this.scene.add(pointLigth);
 
@@ -138,25 +126,25 @@ export class MainScene {
     this.controls.orbit.update();
 
     // Components
-    world.registerComponent(COMPS.Translation);
-    world.registerComponent(COMPS.Particles);
-    world.registerComponent(COMPS.Geometry);
-    world.registerComponent(COMPS.Material);
-    world.registerComponent(COMPS.Orbit);
-    world.registerComponent(COMPS.Path);
+    this.world.registerComponent(COMPS.Translation);
+    this.world.registerComponent(COMPS.Particles);
+    this.world.registerComponent(COMPS.Geometry);
+    this.world.registerComponent(COMPS.Material);
+    this.world.registerComponent(COMPS.Orbit);
+    this.world.registerComponent(COMPS.Path);
 
-    world.registerComponent(COMPS.StateComponentPath);
-    world.registerComponent(COMPS.StateComponentParticles);
-    world.registerComponent(COMPS.StateComponentMaterial);
-    world.registerComponent(COMPS.StateComponentGeometry);
+    this.world.registerComponent(COMPS.StateComponentPath);
+    this.world.registerComponent(COMPS.StateComponentParticles);
+    this.world.registerComponent(COMPS.StateComponentMaterial);
+    this.world.registerComponent(COMPS.StateComponentGeometry);
 
     // Systems
-    world.registerSystem(TranslationSystem);
-    world.registerSystem(GeometrySystem);
-    world.registerSystem(MaterialSystem);
-    world.registerSystem(OrbitSystem);
-    world.registerSystem(StartFieldSystem);
-    world.registerSystem(PathSystem);
+    this.world.registerSystem(TranslationSystem);
+    this.world.registerSystem(GeometrySystem);
+    this.world.registerSystem(MaterialSystem);
+    this.world.registerSystem(OrbitSystem);
+    this.world.registerSystem(StartFieldSystem);
+    this.world.registerSystem(PathSystem);
 
     // Events Listners
     window.addEventListener('resize', () => {
@@ -171,7 +159,8 @@ export class MainScene {
   }
 
   add({ name, parent }) {
-    return this.world?.add(name, parent || this.sceneEntity);
+    const parentNode = parent || this.sceneEntity;
+    return this.world?.add(name, parentNode);
   }
 }
 
