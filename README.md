@@ -1,15 +1,3 @@
-# 🚀 Welcome to your new awesome project!
+# :sunny: SOLSYS!
 
-This project has been created using **webpack scaffold**, you can now run
-
-```
-npm run build
-```
-
-or
-
-```
-yarn build
-```
-
-to bundle your application
+A 3D solar system webpage built in [three.js](https://threejs.org/) based in ECS system with [ecsy](https://github.com/ecsyjs/ecsy) library.
