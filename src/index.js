@@ -1,5 +1,6 @@
 import { Object3DComponent } from 'ecsy-three';
 import * as THREE from 'three';
+import { GUI } from 'dat.gui';
 import { MainScene } from './ecs';
 import {
   Translation, Geometry, Material, Orbit, Particles, Path,
@@ -17,22 +18,31 @@ const isEnvDevelopment = process.env.NODE_ENV === 'development';
 const remoteDevtools = isEnvDevelopment && devTools;
 
 const canvas = document.querySelector('canvas.webgl');
-document.title = 'Three.js | Solar System';
+document.title = 'Solsys';
 
-const mainScene = new MainScene({ remoteDevtools, canvas, zoom: 0.09 });
+const rootGui = new GUI({
+  name: 'MainSceneGUI',
+});
+
+const mainScene = new MainScene({
+  remoteDevtools, canvas, gui: rootGui,
+});
 const showOrbitPaths = false;
 
 const scale = 1 / 100000000;
 const scaleKmToMeters = (km) => (km * 1000) * scale;
-const starsCount = 100000;
+const starsCount = 10000000;
 
 const distScale = 1 / 80;
+const planetsScale = 1;
 
 mainScene.add({ name: 'Starfield' })
   .addComponent(Particles, { count: starsCount });
 
+mainScene.camera.parent = null;
+
 // Sun
-const sunRadius = scaleKmToMeters(696340);
+const sunRadius = scaleKmToMeters(696340 * planetsScale);
 mainScene.add({ name: 'Sun' })
   .addComponent(Translation, { position: new THREE.Vector3() })
   .addComponent(Geometry, {
@@ -51,7 +61,7 @@ mainScene.add({ name: 'Sun' })
 // end sun
 
 // mecury
-const mercuryRadius = scaleKmToMeters(2439);
+const mercuryRadius = scaleKmToMeters(2439 * planetsScale);
 const mercuryDistFromSun = scaleKmToMeters(58000000 * distScale);
 mainScene.add({ name: 'Mercury' })
   .addComponent(Translation, { rotation: new THREE.Vector3(0, 1, 0) })
@@ -81,7 +91,7 @@ mainScene.add({ name: 'MercuryOrbitPath' })
 // end mercury
 
 // venus
-const venusRadius = scaleKmToMeters(6051);
+const venusRadius = scaleKmToMeters(6051 * planetsScale);
 const venusDistFromSun = scaleKmToMeters(108000000 * distScale);
 mainScene.add({ name: 'Venus' })
   .addComponent(Translation, {
@@ -113,7 +123,7 @@ mainScene.add({ name: 'VenusOrbitPath' })
 // end venus
 
 // earth
-const earthRadius = scaleKmToMeters(6371);
+const earthRadius = scaleKmToMeters(6371 * planetsScale);
 const earthDistFromSun = scaleKmToMeters(149600000 * distScale);
 const Earth = mainScene.add({ name: 'Earth' })
   .addComponent(Translation, {
@@ -146,7 +156,7 @@ mainScene.add({ name: 'EathOrbitPath' })
 // end earth
 
 // moon
-const moonRadius = scaleKmToMeters(1.737);
+const moonRadius = scaleKmToMeters(1.737 * planetsScale);
 mainScene.add({ name: 'Moon', parent: Earth })
   .addComponent(Translation, {
     rotation: new THREE.Vector3(0, -2, 0),
@@ -174,7 +184,7 @@ mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
 // end moon
 
 // mars
-const marsRadius = scaleKmToMeters(3.389);
+const marsRadius = scaleKmToMeters(3.389 * planetsScale);
 const marsDistFromSun = scaleKmToMeters(228000000 * distScale);
 mainScene.add({ name: 'Mars' })
   .addComponent(Translation, {
@@ -206,7 +216,7 @@ mainScene.add({ name: 'MarsOrbitPath' })
 // end mars
 
 // jupiter
-const jupiterRadius = scaleKmToMeters(69911);
+const jupiterRadius = scaleKmToMeters(69911 * planetsScale);
 const jupiterDistFromSun = scaleKmToMeters(778000000 * distScale);
 mainScene.add({ name: 'Jupiter' })
   .addComponent(Translation, {
@@ -238,7 +248,7 @@ mainScene.add({ name: 'JupiterOrbitPath' })
 // end jupiter
 
 // saturn
-const saturnRadius = scaleKmToMeters(58232);
+const saturnRadius = scaleKmToMeters(58232 * planetsScale);
 const saturnDistFromSun = scaleKmToMeters(14000000000 * distScale);
 const Saturn = mainScene.add({ name: 'Saturn' })
   .addComponent(Translation, {
@@ -293,7 +303,7 @@ mainScene.add({ name: 'SaturnOrbitPath' })
 // end saturn
 
 // Uranus
-const uranusRadius = scaleKmToMeters(25362);
+const uranusRadius = scaleKmToMeters(25362 * planetsScale);
 const uranusDistFromSun = scaleKmToMeters(29000000000 * distScale);
 mainScene.add({ name: 'Uranus' })
   .addComponent(Translation, {
@@ -325,7 +335,7 @@ mainScene.add({ name: 'UranusPath' })
 // end uranus
 
 // Neptune
-const neptuneRadius = scaleKmToMeters(24622);
+const neptuneRadius = scaleKmToMeters(24622 * planetsScale);
 const neptuneDistFromSun = scaleKmToMeters(2781622982 * distScale);
 mainScene.add({ name: 'Neptune' })
   .addComponent(Translation, {

@@ -10,7 +10,7 @@ class StartFieldSystem extends System {
       const geometry = new THREE.BufferGeometry();
 
       for (let i = 0; i < count * 3; i += 1) {
-        positions[i] = (Math.random() - 0.5) * 100;
+        positions[i] = (Math.random() - 0.5) * 2048;
       }
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 

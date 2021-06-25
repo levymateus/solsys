@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as ECSYTHREE from 'ecsy-three';
 import { enableRemoteDevtools } from 'ecsy';
-import { GUI } from 'dat.gui';
 import Stats from 'stats.js';
 
 import * as COMPS from './Components';
@@ -17,7 +16,7 @@ import PathSystem from './systems/PathSystem';
 
 export class MainScene {
   constructor({
-    remoteDevtools = false, antialias = true, canvas = undefined, zoom = 0.1,
+    remoteDevtools = false, antialias = true, canvas = undefined, gui,
   }) {
     this.world = null;
     this.scene = null;
@@ -25,8 +24,8 @@ export class MainScene {
     this.input = null;
     this.sceneEntity = null;
     this.controls = {};
-    this.zoom = zoom;
-    this.gui = new GUI();
+    this.zoom = 10;
+    this.gui = gui;
 
     this.canvas = canvas;
     this.aspect = window.innerWidth / window.innerHeight;
@@ -46,8 +45,8 @@ export class MainScene {
     this.clock = new THREE.Clock();
 
     const size = 1;
-    const near = 5;
-    const far = 1000;
+    const near = 1;
+    const far = 99999999;
     this.perspectiveCamera = new THREE.OrthographicCamera(-size, size, size, -size, near, far);
 
     this.intersected = null;
@@ -80,8 +79,6 @@ export class MainScene {
       this.world.execute(this.clock.getDelta(), this.clock.elapsedTime);
     };
 
-    const updateCamera = () => this.camera?.updateProjectionMatrix();
-
     const options = { animationLoop, camera: this.perspectiveCamera, renderer: this.webGLRenderer };
     const ecsThree = ECSYTHREE.initialize(new World(), options);
 
@@ -94,16 +91,34 @@ export class MainScene {
     this.controls.orbit.update();
 
     // Cameras
-    this.camera.position.set(5, 10, 3);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.position.set(0, 0, 0);
     this.camera.zoom = this.zoom;
 
     const cameraGUI = this.gui.addFolder('Camera');
-    cameraGUI.add(this.camera, 'zoom', -100, 100)
-      .step(0.001)
+    const updateCamera = () => this.camera?.updateProjectionMatrix();
+    cameraGUI.add(this.camera, 'zoom', 10, 1000)
+      .step(0.01)
       .name('zoom')
       .setValue(this.zoom)
       .onChange(updateCamera);
+    cameraGUI.add(this.camera.position, 'x', -1000, 1000)
+      .step(1)
+      .name('x')
+      .setValue(0)
+      .onChange(updateCamera)
+      .listen();
+    cameraGUI.add(this.camera.position, 'y', -1000, 1000)
+      .step(1)
+      .name('y')
+      .setValue(90)
+      .onChange(updateCamera)
+      .listen();
+    cameraGUI.add(this.camera.position, 'z', 10, 10000)
+      .step(1)
+      .name('z')
+      .setValue(600)
+      .onChange(updateCamera)
+      .listen();
     cameraGUI.open();
 
     // Lights
