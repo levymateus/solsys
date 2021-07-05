@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as ECSYTHREE from 'ecsy-three';
 import { enableRemoteDevtools } from 'ecsy';
 import Stats from 'stats.js';
@@ -13,6 +12,7 @@ import MaterialSystem from './systems/MaterialSystem';
 import OrbitSystem from './systems/OrbitSystem';
 import StartFieldSystem from './systems/StarfieldSystem';
 import PathSystem from './systems/PathSystem';
+import TextSystem from './systems/TextSystem';
 
 export class MainScene {
   constructor({
@@ -75,7 +75,6 @@ export class MainScene {
     // The Game loop
     const animationLoop = () => {
       this.stats.update();
-      this.controls.orbit.update();
       this.world.execute(this.clock.getDelta(), this.clock.elapsedTime);
     };
 
@@ -87,36 +86,36 @@ export class MainScene {
     this.camera = ecsThree.camera;
     this.sceneEntity = ecsThree.sceneEntity;
 
-    this.controls.orbit = new OrbitControls(this.camera, this.canvas);
-    this.controls.orbit.update();
+    this.scene.background = 0xffffff;
 
     // Cameras
     this.camera.position.set(0, 0, 0);
     this.camera.zoom = this.zoom;
+    this.camera.lookAt(0, 0, 0);
 
     const cameraGUI = this.gui.addFolder('Camera');
     const updateCamera = () => this.camera?.updateProjectionMatrix();
-    cameraGUI.add(this.camera, 'zoom', 10, 1000)
-      .step(0.01)
+    cameraGUI.add(this.camera, 'zoom', 10, 100)
+      .step(0.001)
       .name('zoom')
       .setValue(this.zoom)
       .onChange(updateCamera);
-    cameraGUI.add(this.camera.position, 'x', -1000, 1000)
-      .step(1)
+    cameraGUI.add(this.camera.position, 'x', -100, 100)
+      .step(0.001)
       .name('x')
+      .setValue(-15)
+      .onChange(updateCamera)
+      .listen();
+    cameraGUI.add(this.camera.position, 'y', -100, 100)
+      .step(0.001)
+      .name('y')
       .setValue(0)
       .onChange(updateCamera)
       .listen();
-    cameraGUI.add(this.camera.position, 'y', -1000, 1000)
-      .step(1)
-      .name('y')
-      .setValue(90)
-      .onChange(updateCamera)
-      .listen();
-    cameraGUI.add(this.camera.position, 'z', 10, 10000)
-      .step(1)
+    cameraGUI.add(this.camera.position, 'z', 10, 1000)
+      .step(0.001)
       .name('z')
-      .setValue(600)
+      .setValue(375)
       .onChange(updateCamera)
       .listen();
     cameraGUI.open();
@@ -136,10 +135,6 @@ export class MainScene {
     pointLightHelper.position.set(0, 0, 0);
     this.scene.add(pointLightHelper);
 
-    // Controls
-    this.controls.orbit = new OrbitControls(this.camera, this.canvas);
-    this.controls.orbit.update();
-
     // Components
     this.world.registerComponent(COMPS.Translation);
     this.world.registerComponent(COMPS.Particles);
@@ -147,11 +142,14 @@ export class MainScene {
     this.world.registerComponent(COMPS.Material);
     this.world.registerComponent(COMPS.Orbit);
     this.world.registerComponent(COMPS.Path);
+    this.world.registerComponent(COMPS.Text);
+    this.world.registerComponent(COMPS.Camera);
 
     this.world.registerComponent(COMPS.StateComponentPath);
     this.world.registerComponent(COMPS.StateComponentParticles);
     this.world.registerComponent(COMPS.StateComponentMaterial);
     this.world.registerComponent(COMPS.StateComponentGeometry);
+    this.world.registerComponent(COMPS.StateComponentText);
 
     // Systems
     this.world.registerSystem(TranslationSystem);
@@ -160,6 +158,10 @@ export class MainScene {
     this.world.registerSystem(OrbitSystem);
     this.world.registerSystem(StartFieldSystem);
     this.world.registerSystem(PathSystem);
+    this.world.registerSystem(TextSystem);
+
+    this.add({ name: 'Camera', parent: this.sceneEntity })
+      .addComponent(COMPS.Camera, { ref: this.camera });
 
     // Events Listners
     window.addEventListener('resize', () => {

@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GUI } from 'dat.gui';
 import { MainScene } from './ecs';
 import {
-  Translation, Geometry, Material, Orbit, Particles, Path,
+  Translation, Geometry, Material, Orbit, Particles, Path, Text,
 } from './ecs/Components';
 
 import './global.css';
@@ -34,15 +34,13 @@ const scaleKmToMeters = (km) => (km * 1000) * scale;
 const starsCount = 10000000;
 
 const distScale = 1 / 80;
-const planetsScale = 1;
+const planetsScale = 6;
 
 mainScene.add({ name: 'Starfield' })
   .addComponent(Particles, { count: starsCount });
 
-mainScene.camera.parent = null;
-
 // Sun
-const sunRadius = scaleKmToMeters(696340 * planetsScale);
+const sunRadius = scaleKmToMeters(696340);
 mainScene.add({ name: 'Sun' })
   .addComponent(Translation, { position: new THREE.Vector3() })
   .addComponent(Geometry, {
@@ -88,6 +86,18 @@ mainScene.add({ name: 'MercuryOrbitPath' })
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
   });
+mainScene.add({ name: 'MercuryLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: mercuryDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.08,
+  })
+  .addComponent(Text, {
+    text: 'Mercury',
+    size: 0.5,
+    position: new THREE.Vector3(0, 1, 0),
+  });
 // end mercury
 
 // venus
@@ -119,6 +129,18 @@ mainScene.add({ name: 'VenusOrbitPath' })
     radius: venusDistFromSun,
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
+  });
+mainScene.add({ name: 'VenusLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(),
+    radius: venusDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.07,
+  })
+  .addComponent(Text, {
+    text: 'Venus',
+    size: 0.5,
+    position: new THREE.Vector3(-1, 1, 0),
   });
 // end venus
 
@@ -153,10 +175,22 @@ mainScene.add({ name: 'EathOrbitPath' })
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
   });
+mainScene.add({ name: 'EarthLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: earthDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.06,
+  })
+  .addComponent(Text, {
+    text: 'Earth',
+    size: 0.5,
+    position: new THREE.Vector3(-1, 1, 0),
+  });
 // end earth
 
 // moon
-const moonRadius = scaleKmToMeters(1.737 * planetsScale);
+const moonRadius = scaleKmToMeters(1737 * planetsScale);
 mainScene.add({ name: 'Moon', parent: Earth })
   .addComponent(Translation, {
     rotation: new THREE.Vector3(0, -2, 0),
@@ -173,18 +207,30 @@ mainScene.add({ name: 'Moon', parent: Earth })
     color: [1, 1, 1],
   })
   .addComponent(Orbit, {
-    radius: 0.7,
+    radius: 2,
     step: 0.01,
   });
 mainScene.add({ name: 'MoonOrbitPath', parent: Earth })
   .addComponent(Path, {
-    radius: 0.7,
+    radius: 2,
     visible: showOrbitPaths,
+  });
+mainScene.add({ name: 'MoonLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: earthDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.06,
+  })
+  .addComponent(Text, {
+    text: 'Moon',
+    size: 0.25,
+    position: new THREE.Vector3(-1, 2, 0),
   });
 // end moon
 
 // mars
-const marsRadius = scaleKmToMeters(3.389 * planetsScale);
+const marsRadius = scaleKmToMeters(3389 * planetsScale);
 const marsDistFromSun = scaleKmToMeters(228000000 * distScale);
 mainScene.add({ name: 'Mars' })
   .addComponent(Translation, {
@@ -212,6 +258,18 @@ mainScene.add({ name: 'MarsOrbitPath' })
     radius: marsDistFromSun,
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
+  });
+mainScene.add({ name: 'MarsLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: marsDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.05,
+  })
+  .addComponent(Text, {
+    text: 'Mars',
+    size: 0.25,
+    position: new THREE.Vector3(-1, 1, 0),
   });
 // end mars
 
@@ -245,6 +303,18 @@ mainScene.add({ name: 'JupiterOrbitPath' })
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
   });
+mainScene.add({ name: 'JupiterLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: jupiterDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.04,
+  })
+  .addComponent(Text, {
+    text: 'Jupiter',
+    size: 1,
+    position: new THREE.Vector3(0, 5, 0),
+  });
 // end jupiter
 
 // saturn
@@ -270,6 +340,18 @@ const Saturn = mainScene.add({ name: 'Saturn' })
     radius: saturnDistFromSun,
     d: new THREE.Vector3(1, 1, 2),
     step: 0.03,
+  });
+mainScene.add({ name: 'SaturnLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: saturnDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.03,
+  })
+  .addComponent(Text, {
+    text: 'Saturn',
+    size: 1,
+    position: new THREE.Vector3(0, 5, 0),
   });
 
 const SaturnRings = mainScene.add({ name: 'SaturnRings', parent: Saturn })
@@ -332,6 +414,19 @@ mainScene.add({ name: 'UranusPath' })
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
   });
+mainScene.add({ name: 'UranusLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: uranusDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.02,
+  })
+  .addComponent(Text, {
+    text: 'Uranus',
+    size: 1,
+    position: new THREE.Vector3(0, 5, 0),
+  });
+
 // end uranus
 
 // Neptune
@@ -363,5 +458,17 @@ mainScene.add({ name: 'NeptunePath' })
     radius: neptuneDistFromSun,
     d: new THREE.Vector3(1, 1, 2),
     visible: showOrbitPaths,
+  });
+mainScene.add({ name: 'NeptuneLegend', parent: null })
+  .addComponent(Orbit, {
+    center: new THREE.Vector3(0, 0, 0),
+    radius: neptuneDistFromSun,
+    d: new THREE.Vector3(1, 1, 2),
+    step: 0.01,
+  })
+  .addComponent(Text, {
+    text: 'Neptune',
+    size: 1,
+    position: new THREE.Vector3(0, 5, 0),
   });
 // end neptune

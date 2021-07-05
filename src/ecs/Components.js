@@ -88,3 +88,29 @@ export class StateComponentPath extends Component {}
 StateComponentPath.schema = {
   ref: { type: ECSYTypes.Ref },
 };
+
+export class StateComponentText extends SystemStateComponent {}
+
+StateComponentText.schema = {
+  ref: { type: ECSYTypes.Ref },
+};
+
+export class Text extends Component {}
+
+Text.schema = {
+  text: { type: ECSYTypes.String, default: 'Text' },
+  size: { type: ECSYTypes.Number, default: 12 },
+  height: { type: ECSYTypes.Number, default: 1 },
+  position: { type: ThreeTypes.Vector3, default: new THREE.Vector3() },
+  fontURL: {
+    type: ECSYTypes.String,
+    default: 'fonts/helvetiker_regular.typeface.json',
+  },
+  color: { type: ThreeTypes.Color, default: new THREE.Color(0xffffff) },
+};
+
+export class Camera extends Component {}
+
+Camera.schema = {
+  ref: { type: ECSYTypes.Ref, default: null },
+};
