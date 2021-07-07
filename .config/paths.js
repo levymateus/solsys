@@ -8,7 +8,7 @@ const fs = require('fs');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
-const buildPath = process.env.BUILD_PATH || 'docs';
+const buildPath = process.env.BUILD_PATH || 'build';
 
 const moduleFileExtensions = ['js'];
 

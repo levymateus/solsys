@@ -37,7 +37,8 @@
   },
   "description": "Solsys",
   "scripts": {
-    "build": "webpack --node-env production --mode production --config ./.config/webpack.config.js&&serve docs -l tcp://localhost:5989/index.html",
+    "build": "webpack --node-env production --mode production --config ./.config/webpack.config.js",
+    "build:local": "webpack --node-env production --mode production --config ./.config/webpack.config.js&&serve build -l tcp://localhost:5989/index.html",
     "start": "webpack serve --node-env development --mode development --config ./.config/webpack.config.js"
   }
 }
