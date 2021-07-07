@@ -1,8 +1,7 @@
 const paths = require('./paths');
 const ip = require('internal-ip');
 const portFinderSync = require('portfinder-sync');
-
-const info = (msg) => `\u001b[1m\u001b[34m${msg}\u001b[39m\u001b[22m`
+const info = require('./utils').info
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
@@ -26,7 +25,7 @@ module.exports = () => {
 			const domain1 = `${protocol}://${localIp}:${port}`
 			const domain2 = `${protocol}://localhost:${port}`
 
-			console.log(`Project running at:\n  - ${info(domain1)}\n  - ${info(domain2)}`)
+			console.log(`\nProject running at:\n  - ${info(domain1)}\n  - ${info(domain2)}\n`)
 		}
 	};
 }

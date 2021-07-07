@@ -1,19 +1,9 @@
 'use strict'
 
+require('./env');
+
 const path = require('path');
 const webpack = require('webpack');
-
-require('dotenv').config();
-
-const NODE_ENV = process.env.NODE_ENV;
-
-if (!NODE_ENV) {
-  throw new Error(
-    'The NODE_ENV environment variable is required but was not specified.'
-  );
-}
-
-process.env.BABEL_ENV = 'development';
 
 const paths = require('./paths');
 const createDevServer = require('./webpackDevServer.config');
@@ -38,12 +28,12 @@ module.exports = function(webpackEnv) {
         filename: 'styles.[contenthash].css',
       }),
       new HtmlWebpackPlugin({
-        title: 'My App',
+        title: process.env.APP_TITLE,
         template: paths.appHtml,
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: path.resolve(__dirname, '../static') }
+          { from: paths.appStatic }
         ]
       }),
     ],
@@ -61,12 +51,6 @@ module.exports = function(webpackEnv) {
           test: /\.(js|jsx)$/,
           include: [path.resolve(__dirname, 'src')],
           loader: 'babel-loader',
-        },
-
-        // Typescript
-        {
-          test: /\.ts?$/,
-          use: 'ts-loader',
           exclude: /node_modules/,
         },
 
@@ -103,7 +87,7 @@ module.exports = function(webpackEnv) {
     },
 
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js', '.css'],
     },
 
     devServer: devServer,

@@ -33,4 +33,5 @@ module.exports = {
   appPublic: resolveApp('public'),
   appPackageJson: resolveApp('package.json'),
   appPath: resolveApp('.'),
+  appStatic: resolveApp('static')
 }

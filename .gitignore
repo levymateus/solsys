@@ -1,4 +1,6 @@
 /node_modules
+/build
 
-.env
+.env*
 launch.json
+.yo-rc.json
