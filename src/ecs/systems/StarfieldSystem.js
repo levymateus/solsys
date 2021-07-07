@@ -5,12 +5,12 @@ import { Particles, StateComponentParticles } from '../Components';
 class StartFieldSystem extends System {
   execute() {
     this.queries.onStart.results.forEach((entity) => {
-      const { count } = entity.getComponent(Particles);
+      const { count, desity } = entity.getComponent(Particles);
       const positions = new Float32Array(count * 3);
       const geometry = new THREE.BufferGeometry();
 
       for (let i = 0; i < count * 3; i += 1) {
-        positions[i] = (Math.random() - 0.5) * 2048;
+        positions[i] = (Math.random() - 0.5) * desity;
       }
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 

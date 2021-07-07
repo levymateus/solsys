@@ -1,3 +1,5 @@
 # :sunny: SOLSYS!
 
 A 3D solar system webpage built in [three.js](https://threejs.org/) based in ECS system with [ecsy](https://github.com/ecsyjs/ecsy) library.
+
+![alt text](./static/shots/shot1.png)

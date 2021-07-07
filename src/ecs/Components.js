@@ -65,6 +65,7 @@ export class Particles extends Component {}
 
 Particles.schema = {
   count: { type: ECSYTypes.Number, default: 1 },
+  desity: { type: ECSYTypes.Number, default: 1024 },
 };
 
 export class StateComponentParticles extends SystemStateComponent {}
@@ -112,5 +113,11 @@ Text.schema = {
 export class Camera extends Component {}
 
 Camera.schema = {
+  ref: { type: ECSYTypes.Ref, default: null },
+};
+
+export class Tween extends Component {}
+
+Tween.schema = {
   ref: { type: ECSYTypes.Ref, default: null },
 };
